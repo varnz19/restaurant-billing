@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            main page
+        </title>
+        <script>
+            </script>
+            <style>
+                body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont,
+            "SF Pro Text", "SF Pro Display",
+            "Segoe UI", Roboto, Helvetica, Arial, sans-serif;;
+}
+
+.na {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #222;
+    color: white;
+    padding: 15px 40px;
+}
+
+/* Logo */
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Nav links */
+.naul {
+    list-style: none;
+    display: flex;
+    gap: 30px;   /* better spacing */
+    margin: 0;
+    padding: 0;
+}
+
+.naul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* Right section */
+.right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Order button */
+.order-btn {
+    background: orange;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0;
+}
+            </style>
+    </head>
+    <body>
+        <nav class="na">
+    <div class="logo">My Cafe</div>
+
+    <ul class="naul">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+
+    <div class="right">
+        <p>Your Cart</p>
+        <p class="order-btn">Order Now</p>
+    </div>
+</nav>
+    </body>
+</html>

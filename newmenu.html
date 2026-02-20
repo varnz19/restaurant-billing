@@ -1,233 +1,244 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Street Cafe Menu</title>
-    <meta charset="UTF-8">
-        <style>
-/* Page Background */
+<title>Cafe Menu</title>
+<meta charset="UTF-8">
+
+<style>
 body {
     margin: 0;
-    padding: 40px;
-    background-color: #f5efe6;
-    font-family: -apple-system, BlinkMacSystemFont, 
-                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 20px 10px;
+    background-color: #f4ede4;
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #2d2d2d;
 }
 
-/* Main Title */
 h1 {
     text-align: center;
-    font-size: 42px;
-    margin-bottom: 50px;
-    letter-spacing: 2px;
+    font-size: 48px;
+    letter-spacing: 3px;
+    margin-bottom: 40px;
 }
 
-/* Section Styling */
-section {
-    max-width: 700px;
-    margin: 0 auto 50px auto;
-}
-
-/* Category Title */
-h2 {
-    font-size: 26px;
-    border-bottom: 2px solid #222;
-    padding-bottom: 8px;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Each Menu Item */
-.menu-item {
+.menu-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.menu-text { flex: 1; }
+.menu-image { flex: 1; text-align: center; }
+
+.menu-image img {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid #333;
     padding-bottom: 8px;
-    border-bottom: 1px dotted #aaa;
 }
 
-/* Item Name */
-.menu-item h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 500;
+.menu-item {
+    display: grid;
+    grid-template-columns: 1.8fr 0.6fr auto auto auto auto;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px 0;
+    border-bottom: 1px dotted #ccc;
 }
 
-/* Price */
-.price {
-    margin: 0;
+.menu-item h3 { margin: 0; font-weight: 500; }
+.price { margin: 0; font-weight: 600; }
+
+.menu-item button {
+    background: #ff7f50;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 5px;
+}
+.menu-item button:first-of-type,
+.menu-item button:nth-of-type(2) {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.menu-item button:hover {
+    background: #ff6333;
+    transform: translateY(-2px);
+}
+
+.menu-item button:active {
+    transform: scale(0.95);
+}
+
+.qty {
+    margin: 0 6px;
     font-weight: 600;
+    min-width: 18px;
+    text-align: center;
 }
-    </style>
+
+.menu-container {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+@media (max-width: 900px) {
+    .menu-section {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+function changeQty(button, change) {
+    let qtySpan = button.parentElement.querySelector(".qty");
+    let current = parseInt(qtySpan.innerText);
+    current += change;
+    if (current < 1) current = 1;
+    qtySpan.innerText = current;
+}
+
+function addToCart(name, price, button) {
+    let qty = parseInt(button.parentElement.querySelector(".qty").innerText);
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let existingItem = cart.find(item => item.name === name);
+
+    if (existingItem) {
+        existingItem.quantity += qty;
+    } else {
+        cart.push({ name, price, quantity: qty });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    button.innerText = "Added ✓";
+    button.style.background = "#28a745";
+
+    setTimeout(() => {
+        button.innerText = "Add";
+        button.style.background = "#ff7f50";
+    }, 1000);
+}
+</script>
+
 </head>
 <body>
-    
-<H1> Our Menu</H1>
-    <!-- CLASSICS -->
-    <section>
-        <h2>Classics</h2>
 
-        <div class="menu-item">
-            <h3>Fries</h3>
-            <p class="price">$3.99</p>
-        </div>
+<div class="menu-container">
+<h1>OUR MENU</h1>
 
-        <div class="menu-item">
-            <h3>Peri Peri Fries</h3>
-            <p class="price">$4.99</p>
-        </div>
+<!-- CLASSICS -->
+<section class="menu-section">
+<div class="menu-text">
+<h2>Classics</h2>
 
-        <div class="menu-item">
-            <h3>Hot Dogs</h3>
-            <p class="price">$5.99</p>
-        </div>
+<div class="menu-item"><h3>Fries</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Fries',3.99,this)">Add</button></div>
+<div class="menu-item"><h3>Peri Peri Fries</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Peri Peri Fries',4.99,this)">Add</button></div>
+<div class="menu-item"><h3>Hot Dogs</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Dogs',5.99,this)">Add</button></div>
+<div class="menu-item"><h3>Grilled Cheese Sandwich</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Grilled Cheese Sandwich',6.99,this)">Add</button></div>
+<div class="menu-item"><h3>Farmhouse Pizza</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Farmhouse Pizza',6.99,this)">Add</button></div>
+<div class="menu-item"><h3>Margerita Pizza</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Margerita Pizza',7.99,this)">Add</button></div>
+<div class="menu-item"><h3>Smash Burger</h3><p class="price">$8.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Smash Burger',8.99,this)">Add</button></div>
 
-        <div class="menu-item">
-            <h3>Grilled Cheese Sandwich</h3>
-            <p class="price">$6.99</p>
-        </div>
+</div>
+<div class="menu-image">
+<img src="./photos/sandwich.png">
+</div>
+</section>
 
-        <div class="menu-item">
-            <h3>Smash Burger</h3>
-            <p class="price">$8.99</p>
-        </div>
-    </section>
+<!-- ASIAN -->
+<section class="menu-section">
+<div class="menu-image">
+<img src="./photos/ramen.png">
+</div>
+<div class="menu-text">
+<h2>Asian</h2>
 
-    <!-- ASIAN -->
-    <section>
-        <h2>Asian</h2>
+<div class="menu-item"><h3>Corn Dogs</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Corn Dogs',5.99,this)">Add</button></div>
+<div class="menu-item"><h3>Bao Buns</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Bao Buns',6.99,this)">Add</button></div>
+<div class="menu-item"><h3>Veg Ramen</h3><p class="price">$9.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Veg Ramen',9.99,this)">Add</button></div>
+<div class="menu-item"><h3>Chicken Ramen</h3><p class="price">$11.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chicken Ramen',11.99,this)">Add</button></div>
 
-        <div class="menu-item">
-            <h3>Corn Dogs</h3>
-            <p class="price">$5.99</p>
-        </div>
+</div>
+</section>
 
-        <div class="menu-item">
-            <h3>Bao Buns</h3>
-            <p class="price">$6.99</p>
-        </div>
+<!-- MEXICAN -->
+<section class="menu-section">
+<div class="menu-text">
+<h2>Mexican</h2>
 
-        <div class="menu-item">
-            <h3>Veg Ramen</h3>
-            <p class="price">$9.99</p>
-        </div>
+<div class="menu-item"><h3>Veg Taco</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Veg Taco',4.99,this)">Add</button></div>
+<div class="menu-item"><h3>Chicken Taco</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chicken Taco',5.99,this)">Add</button></div>
+<div class="menu-item"><h3>Nachos</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Nachos',7.99,this)">Add</button></div>
+<div class="menu-item"><h3>Quesadillas</h3><p class="price">$8.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Quesadillas',8.99,this)">Add</button></div>
+<div class="menu-item"><h3>Burrito (Paneer / Aloo / Chicken)</h3><p class="price">$9.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Burrito (Paneer / Aloo / Chicken)',9.99,this)">Add</button></div>
 
-        <div class="menu-item">
-            <h3>Chicken Ramen</h3>
-            <p class="price">$11.99</p>
-        </div>
-    </section>
+</div>
+<div class="menu-image">
+<img src="./photos/burrito.png">
+</div>
+</section>
 
-    <!-- MEXICAN -->
-    <section>
-        <h2>Mexican</h2>
+<!-- DESSERTS -->
+<section class="menu-section">
+<div class="menu-image">
+<img src="./photos/cake.png">
+</div>
+<div class="menu-text">
+<h2>Desserts</h2>
 
-        <div class="menu-item">
-            <h3>Veg Taco</h3>
-            <p class="price">$4.99</p>
-        </div>
+<div class="menu-item"><h3>Glazed Donut</h3><p class="price">$2.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Glazed Donut',2.99,this)">Add</button></div>
+<div class="menu-item"><h3>Brownie</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Brownie',4.99,this)">Add</button></div>
+<div class="menu-item"><h3>Churros with Chocolate Dip</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Churros with Chocolate Dip',5.99,this)">Add</button></div>
+<div class="menu-item"><h3>Waffles</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Waffles',6.99,this)">Add</button></div>
+<div class="menu-item"><h3>Brownie with Ice Cream</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Brownie with Ice Cream',7.99,this)">Add</button></div>
+<div class="menu-item"><h3>Lemon Cake</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemon Cake',5.99,this)">Add</button></div>
+<div class="menu-item"><h3>Strawberry Cake</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Strawberry Cake',6.99,this)">Add</button></div>
+<div class="menu-item"><h3>Chocolate Cake</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chocolate Cake',6.99,this)">Add</button></div>
 
-        <div class="menu-item">
-            <h3>Chicken Taco</h3>
-            <p class="price">$5.99</p>
-        </div>
+</div>
+</section>
 
-        <div class="menu-item">
-            <h3>Nachos</h3>
-            <p class="price">$7.99</p>
-        </div>
+<!-- DRINKS -->
+<section class="menu-section">
+<div class="menu-text">
+<h2>Drinks</h2>
 
-        <div class="menu-item">
-            <h3>Quesadillas</h3>
-            <p class="price">$8.99</p>
-        </div>
+<div class="menu-item"><h3>Lemon Tea</h3><p class="price">$2.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemon Tea',2.99,this)">Add</button></div>
+<div class="menu-item"><h3>Hot Coffee</h3><p class="price">$3.49</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Coffee',3.49,this)">Add</button></div>
+<div class="menu-item"><h3>Hot Chocolate</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Chocolate',3.99,this)">Add</button></div>
+<div class="menu-item"><h3>Lemonade</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemonade',3.99,this)">Add</button></div>
+<div class="menu-item"><h3>Iced Coffee</h3><p class="price">$4.49</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Iced Coffee',4.49,this)">Add</button></div>
+<div class="menu-item"><h3>Bubble Tea</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Bubble Tea',5.99,this)">Add</button></div>
 
-        <div class="menu-item">
-            <h3>Burrito (Paneer / Aloo / Chicken)</h3>
-            <p class="price">$9.99</p>
-        </div>
-    </section>
+</div>
+<div class="menu-image">
+<img src="./photos/coffee.png">
+</div>
+</section>
 
-    <!-- DESSERTS -->
-    <section>
-        <h2>Desserts</h2>
-
-        <div class="menu-item">
-            <h3>Glazed Donut</h3>
-            <p class="price">$2.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Brownie</h3>
-            <p class="price">$4.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Churros with Chocolate Dip</h3>
-            <p class="price">$5.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Waffles</h3>
-            <p class="price">$6.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Brownie with Ice Cream</h3>
-            <p class="price">$7.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Lemon Cake</h3>
-            <p class="price">$5.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Strawberry Cake</h3>
-            <p class="price">$6.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Chocolate Cake</h3>
-            <p class="price">$6.99</p>
-        </div>
-    </section>
-
-    <!-- DRINKS -->
-    <section>
-        <h2>Drinks</h2>
-
-        <div class="menu-item">
-            <h3>Lemon Tea</h3>
-            <p class="price">$2.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Hot Coffee</h3>
-            <p class="price">$3.49</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Hot Chocolate</h3>
-            <p class="price">$3.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Lemonade</h3>
-            <p class="price">$3.99</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Iced Coffee</h3>
-            <p class="price">$4.49</p>
-        </div>
-
-        <div class="menu-item">
-            <h3>Bubble Tea</h3>
-            <p class="price">$5.99</p>
-        </div>
-    </section>
-
+</div>
 </body>
 </html>

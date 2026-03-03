@@ -1,166 +1,188 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Cafe Menu</title>
+<title>Menu | VARNZZ'S PLACE</title>
 <meta charset="UTF-8">
 
 <style>
 body {
     margin: 0;
-    padding: 20px 10px;
-    background-color: #f4ede4;
-    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    color: #2d2d2d;
+    font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f7f6f3;
+    color: #2c2c2c;
 }
 
-h1 {
+/* NAVBAR */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 80px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.nav-links a:hover {
+    color: #000;
+}
+
+.cart {
+    font-size: 14px;
+    color: #555;
+    text-decoration: none;
+}
+
+/* MENU */
+.menu-wrapper {
+    max-width: 1100px;
+    margin: 100px auto;
+    padding: 0 40px;
+}
+
+.menu-wrapper h1 {
     text-align: center;
-    font-size: 48px;
-    letter-spacing: 3px;
-    margin-bottom: 40px;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 80px;
 }
 
 .menu-section {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    margin-bottom: 40px;
+    gap: 80px;
+    margin-bottom: 120px;
 }
 
-.menu-text { flex: 1; }
-.menu-image { flex: 1; text-align: center; }
+.menu-section.reverse {
+    flex-direction: row-reverse;
+}
 
 .menu-image img {
     width: 100%;
-    max-width: 350px;
-    border-radius: 20px;
+    max-width: 420px;
+    border-radius: 6px;
 }
 
-h2 {
-    font-size: 28px;
-    margin-bottom: 25px;
-    text-transform: uppercase;
+.menu-text {
+    flex: 1;
+}
+
+.menu-text h2 {
+    font-size: 18px;
     letter-spacing: 2px;
-    border-bottom: 2px solid #333;
-    padding-bottom: 8px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
 .menu-item {
-    display: grid;
-    grid-template-columns: 1.8fr 0.6fr auto auto auto auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 12px 0;
-    border-bottom: 1px dotted #ccc;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
 }
 
-.menu-item h3 { margin: 0; font-weight: 500; }
-.price { margin: 0; font-weight: 600; }
+.item-info h3 {
+    margin: 0;
+    font-weight: 500;
+}
 
-.menu-item button {
-    background: #ff7f50;
-    color: white;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 20px;
+.price {
     font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+button {
+    border: 1px solid #2c2c2c;
+    background: #ffffff;
+    color: #2c2c2c;
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    margin-left: 5px;
-}
-.menu-item button:first-of-type,
-.menu-item button:nth-of-type(2) {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border-radius: 50%;
-    font-weight: bold;
+    transition: all 0.2s ease;
 }
 
-.menu-item button:hover {
-    background: #ff6333;
-    transform: translateY(-2px);
-}
-
-.menu-item button:active {
-    transform: scale(0.95);
+button:hover {
+    background: #2c2c2c;
+    color: white;
 }
 
 .qty {
-    margin: 0 6px;
-    font-weight: 600;
-    min-width: 18px;
+    min-width: 20px;
     text-align: center;
 }
 
-.menu-container {
-    max-width: 1100px;
-    margin: 20px auto;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
 @media (max-width: 900px) {
-    .menu-section {
+    .menu-section,
+    .menu-section.reverse {
         flex-direction: column;
-        text-align: center;
+        gap: 40px;
     }
 }
 </style>
-
-<script>
-function changeQty(button, change) {
-    let qtySpan = button.parentElement.querySelector(".qty");
-    let current = parseInt(qtySpan.innerText);
-    current += change;
-    if (current < 1) current = 1;
-    qtySpan.innerText = current;
-}
-
-function addToCart(name, price, button) {
-    let qty = parseInt(button.parentElement.querySelector(".qty").innerText);
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let existingItem = cart.find(item => item.name === name);
-
-    if (existingItem) {
-        existingItem.quantity += qty;
-    } else {
-        cart.push({ name, price, quantity: qty });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    button.innerText = "Added ✓";
-    button.style.background = "#28a745";
-
-    setTimeout(() => {
-        button.innerText = "Add";
-        button.style.background = "#ff7f50";
-    }, 1000);
-}
-</script>
-
 </head>
+
 <body>
 
-<div class="menu-container">
-<h1>OUR MENU</h1>
+<nav class="nav">
+    <div class="logo">VARNZZ'S PLACE</div>
+
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="newmenu.html">MENU</a>
+        <a href="contact.html">CONTACT</a>
+    </div>
+
+    <a href="yourcart.html" class="cart">
+        Cart (<span id="cart-count">0</span>)
+    </a>
+</nav>
+
+<div class="menu-wrapper">
+<h1>Menu</h1>
 
 <!-- CLASSICS -->
 <section class="menu-section">
 <div class="menu-text">
-<h2>Classics</h2>
+<h2>CLASSICS</h2>
 
-<div class="menu-item"><h3>Fries</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Fries',3.99,this)">Add</button></div>
-<div class="menu-item"><h3>Peri Peri Fries</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Peri Peri Fries',4.99,this)">Add</button></div>
-<div class="menu-item"><h3>Hot Dogs</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Dogs',5.99,this)">Add</button></div>
-<div class="menu-item"><h3>Grilled Cheese Sandwich</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Grilled Cheese Sandwich',6.99,this)">Add</button></div>
-<div class="menu-item"><h3>Farmhouse Pizza</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Farmhouse Pizza',6.99,this)">Add</button></div>
-<div class="menu-item"><h3>Margerita Pizza</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Margerita Pizza',7.99,this)">Add</button></div>
-<div class="menu-item"><h3>Smash Burger</h3><p class="price">$8.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Smash Burger',8.99,this)">Add</button></div>
+<!-- All classics restored -->
+<div class="menu-item" data-name="Fries" data-price="3.99"><div class="item-info"><h3>Fries</h3><div class="price">$3.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Peri Peri Fries" data-price="4.99"><div class="item-info"><h3>Peri Peri Fries</h3><div class="price">$4.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Hot Dogs" data-price="5.99"><div class="item-info"><h3>Hot Dogs</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Grilled Cheese Sandwich" data-price="6.99"><div class="item-info"><h3>Grilled Cheese Sandwich</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Farmhouse Pizza" data-price="6.99"><div class="item-info"><h3>Farmhouse Pizza</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Margerita Pizza" data-price="7.99"><div class="item-info"><h3>Margerita Pizza</h3><div class="price">$7.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Smash Burger" data-price="8.99"><div class="item-info"><h3>Smash Burger</h3><div class="price">$8.99</div></div><div class="controls"></div></div>
 
 </div>
 <div class="menu-image">
@@ -169,31 +191,31 @@ function addToCart(name, price, button) {
 </section>
 
 <!-- ASIAN -->
-<section class="menu-section">
+<section class="menu-section reverse">
+<div class="menu-text">
+<h2>ASIAN</h2>
+
+<div class="menu-item" data-name="Corn Dogs" data-price="5.99"><div class="item-info"><h3>Corn Dogs</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Bao Buns" data-price="6.99"><div class="item-info"><h3>Bao Buns</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Veg Ramen" data-price="9.99"><div class="item-info"><h3>Veg Ramen</h3><div class="price">$9.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Chicken Ramen" data-price="11.99"><div class="item-info"><h3>Chicken Ramen</h3><div class="price">$11.99</div></div><div class="controls"></div></div>
+
+</div>
 <div class="menu-image">
 <img src="./photos/ramen.png">
-</div>
-<div class="menu-text">
-<h2>Asian</h2>
-
-<div class="menu-item"><h3>Corn Dogs</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Corn Dogs',5.99,this)">Add</button></div>
-<div class="menu-item"><h3>Bao Buns</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Bao Buns',6.99,this)">Add</button></div>
-<div class="menu-item"><h3>Veg Ramen</h3><p class="price">$9.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Veg Ramen',9.99,this)">Add</button></div>
-<div class="menu-item"><h3>Chicken Ramen</h3><p class="price">$11.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chicken Ramen',11.99,this)">Add</button></div>
-
 </div>
 </section>
 
 <!-- MEXICAN -->
 <section class="menu-section">
 <div class="menu-text">
-<h2>Mexican</h2>
+<h2>MEXICAN</h2>
 
-<div class="menu-item"><h3>Veg Taco</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Veg Taco',4.99,this)">Add</button></div>
-<div class="menu-item"><h3>Chicken Taco</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chicken Taco',5.99,this)">Add</button></div>
-<div class="menu-item"><h3>Nachos</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Nachos',7.99,this)">Add</button></div>
-<div class="menu-item"><h3>Quesadillas</h3><p class="price">$8.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Quesadillas',8.99,this)">Add</button></div>
-<div class="menu-item"><h3>Burrito (Paneer / Aloo / Chicken)</h3><p class="price">$9.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Burrito (Paneer / Aloo / Chicken)',9.99,this)">Add</button></div>
+<div class="menu-item" data-name="Veg Taco" data-price="4.99"><div class="item-info"><h3>Veg Taco</h3><div class="price">$4.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Chicken Taco" data-price="5.99"><div class="item-info"><h3>Chicken Taco</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Nachos" data-price="7.99"><div class="item-info"><h3>Nachos</h3><div class="price">$7.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Quesadillas" data-price="8.99"><div class="item-info"><h3>Quesadillas</h3><div class="price">$8.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Burrito (Paneer / Aloo / Chicken)" data-price="9.99"><div class="item-info"><h3>Burrito (Paneer / Aloo / Chicken)</h3><div class="price">$9.99</div></div><div class="controls"></div></div>
 
 </div>
 <div class="menu-image">
@@ -202,36 +224,36 @@ function addToCart(name, price, button) {
 </section>
 
 <!-- DESSERTS -->
-<section class="menu-section">
+<section class="menu-section reverse">
+<div class="menu-text">
+<h2>DESSERTS</h2>
+
+<div class="menu-item" data-name="Glazed Donut" data-price="2.99"><div class="item-info"><h3>Glazed Donut</h3><div class="price">$2.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Brownie" data-price="4.99"><div class="item-info"><h3>Brownie</h3><div class="price">$4.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Churros with Chocolate Dip" data-price="5.99"><div class="item-info"><h3>Churros with Chocolate Dip</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Waffles" data-price="6.99"><div class="item-info"><h3>Waffles</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Brownie with Ice Cream" data-price="7.99"><div class="item-info"><h3>Brownie with Ice Cream</h3><div class="price">$7.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Lemon Cake" data-price="5.99"><div class="item-info"><h3>Lemon Cake</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Strawberry Cake" data-price="6.99"><div class="item-info"><h3>Strawberry Cake</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Chocolate Cake" data-price="6.99"><div class="item-info"><h3>Chocolate Cake</h3><div class="price">$6.99</div></div><div class="controls"></div></div>
+
+</div>
 <div class="menu-image">
 <img src="./photos/cake.png">
-</div>
-<div class="menu-text">
-<h2>Desserts</h2>
-
-<div class="menu-item"><h3>Glazed Donut</h3><p class="price">$2.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Glazed Donut',2.99,this)">Add</button></div>
-<div class="menu-item"><h3>Brownie</h3><p class="price">$4.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Brownie',4.99,this)">Add</button></div>
-<div class="menu-item"><h3>Churros with Chocolate Dip</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Churros with Chocolate Dip',5.99,this)">Add</button></div>
-<div class="menu-item"><h3>Waffles</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Waffles',6.99,this)">Add</button></div>
-<div class="menu-item"><h3>Brownie with Ice Cream</h3><p class="price">$7.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Brownie with Ice Cream',7.99,this)">Add</button></div>
-<div class="menu-item"><h3>Lemon Cake</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemon Cake',5.99,this)">Add</button></div>
-<div class="menu-item"><h3>Strawberry Cake</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Strawberry Cake',6.99,this)">Add</button></div>
-<div class="menu-item"><h3>Chocolate Cake</h3><p class="price">$6.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Chocolate Cake',6.99,this)">Add</button></div>
-
 </div>
 </section>
 
 <!-- DRINKS -->
 <section class="menu-section">
 <div class="menu-text">
-<h2>Drinks</h2>
+<h2>DRINKS</h2>
 
-<div class="menu-item"><h3>Lemon Tea</h3><p class="price">$2.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemon Tea',2.99,this)">Add</button></div>
-<div class="menu-item"><h3>Hot Coffee</h3><p class="price">$3.49</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Coffee',3.49,this)">Add</button></div>
-<div class="menu-item"><h3>Hot Chocolate</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Hot Chocolate',3.99,this)">Add</button></div>
-<div class="menu-item"><h3>Lemonade</h3><p class="price">$3.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Lemonade',3.99,this)">Add</button></div>
-<div class="menu-item"><h3>Iced Coffee</h3><p class="price">$4.49</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Iced Coffee',4.49,this)">Add</button></div>
-<div class="menu-item"><h3>Bubble Tea</h3><p class="price">$5.99</p><button onclick="changeQty(this,-1)">-</button><span class="qty">1</span><button onclick="changeQty(this,1)">+</button><button onclick="addToCart('Bubble Tea',5.99,this)">Add</button></div>
+<div class="menu-item" data-name="Lemon Tea" data-price="2.99"><div class="item-info"><h3>Lemon Tea</h3><div class="price">$2.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Hot Coffee" data-price="3.49"><div class="item-info"><h3>Hot Coffee</h3><div class="price">$3.49</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Hot Chocolate" data-price="3.99"><div class="item-info"><h3>Hot Chocolate</h3><div class="price">$3.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Lemonade" data-price="3.99"><div class="item-info"><h3>Lemonade</h3><div class="price">$3.99</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Iced Coffee" data-price="4.49"><div class="item-info"><h3>Iced Coffee</h3><div class="price">$4.49</div></div><div class="controls"></div></div>
+<div class="menu-item" data-name="Bubble Tea" data-price="5.99"><div class="item-info"><h3>Bubble Tea</h3><div class="price">$5.99</div></div><div class="controls"></div></div>
 
 </div>
 <div class="menu-image">
@@ -240,5 +262,73 @@ function addToCart(name, price, button) {
 </section>
 
 </div>
+
+<script>
+function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById("cart-count").innerText = total;
+}
+
+function renderControls(itemElement) {
+    let name = itemElement.dataset.name;
+    let price = parseFloat(itemElement.dataset.price);
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let existing = cart.find(i => i.name === name);
+    let controls = itemElement.querySelector(".controls");
+    controls.innerHTML = "";
+
+    if (!existing) {
+        let addBtn = document.createElement("button");
+        addBtn.innerText = "Add";
+        addBtn.onclick = () => changeQuantity(name, price, 1);
+        controls.appendChild(addBtn);
+    } else {
+        let minus = document.createElement("button");
+        minus.innerText = "-";
+        minus.onclick = () => changeQuantity(name, price, -1);
+
+        let qty = document.createElement("span");
+        qty.className = "qty";
+        qty.innerText = existing.quantity;
+
+        let plus = document.createElement("button");
+        plus.innerText = "+";
+        plus.onclick = () => changeQuantity(name, price, 1);
+
+        controls.append(minus, qty, plus);
+    }
+}
+
+function changeQuantity(name, price, change) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let item = cart.find(i => i.name === name);
+
+    if (!item && change > 0) {
+        cart.push({ name, price, quantity: 1 });
+    } else if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            cart = cart.filter(i => i.name !== name);
+        }
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    initMenu();
+}
+
+function initMenu() {
+    document.querySelectorAll(".menu-item").forEach(item => {
+        renderControls(item);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    updateCartCount();
+    initMenu();
+});
+</script>
+
 </body>
 </html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment | VARNZZ'S PLACE</title>
+<meta charset="UTF-8">
+
+<style>
+body {
+    margin: 0;
+    background: #f7f6f3;
+    font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #2c2c2c;
+}
+
+/* NAVBAR */
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 80px;
+    background: white;
+    border-bottom: 1px solid #eee;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* WRAPPER */
+.payment-wrapper {
+    max-width: 550px;
+    margin: 120px auto;
+    padding: 50px;
+    background: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+/* HEADER */
+.payment-wrapper h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 40px;
+}
+
+/* PAYMENT OPTIONS */
+.payment-option {
+    border: 1px solid #ddd;
+    padding: 18px 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+}
+
+.payment-option:hover {
+    border-color: #2c2c2c;
+}
+
+/* Selected State */
+.payment-option.selected {
+    border: 2px solid #2c2c2c;
+    font-weight: 600;
+    background: #fafafa;
+}
+
+/* CHECK MARK */
+.checkmark {
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.payment-option.selected .checkmark {
+    opacity: 1;
+}
+
+/* BUTTON */
+.pay-btn {
+    margin-top: 40px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #2c2c2c;
+    background: transparent;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pay-btn:hover {
+    background: #2c2c2c;
+    color: white;
+}
+
+.pay-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+    <div class="logo">VARNZZ'S PLACE</div>
+</nav>
+
+<div class="payment-wrapper">
+
+    <h1>Payment</h1>
+    <div class="subtitle">Choose your preferred payment method</div>
+
+    <div class="payment-option" onclick="selectPayment(this, 'Card')">
+        <span>Credit / Debit Card</span>
+        <span class="checkmark"></span>
+    </div>
+
+    <div class="payment-option" onclick="selectPayment(this, 'UPI')">
+        <span>UPI</span>
+        <span class="checkmark"></span>
+    </div>
+
+    <div class="payment-option" onclick="selectPayment(this, 'Cash')">
+        <span>Cash</span>
+        <span class="checkmark"></span>
+    </div>
+
+    <button id="payButton" class="pay-btn" disabled onclick="confirmPayment()">
+        Confirm Payment
+    </button>
+
+</div>
+
+<script>
+
+let selectedMethod = "";
+
+function selectPayment(element, method) {
+
+    // Remove selected from all
+    document.querySelectorAll(".payment-option")
+        .forEach(opt => opt.classList.remove("selected"));
+
+    // Add selected to clicked
+    element.classList.add("selected");
+
+    selectedMethod = method;
+
+    // Enable button
+    document.getElementById("payButton").disabled = false;
+}
+
+function confirmPayment() {
+    if (!selectedMethod) return;
+
+    localStorage.setItem("paymentMethod", selectedMethod);
+    window.location.href = "bill.html";
+}
+
+</script>
+
+</body>
+</html>
